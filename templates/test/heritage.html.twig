@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+
+
+{% block body %}
+<h2>page test/heritage</h2>
+<p>le contenu du <code>block body</code> du fichier héritage remplace le contenu du <code>block body</code> du fichier de base</p>
+{% endblock %}
+
+{% block title %}Héritage!{% endblock %}
+
+{% block h1 %} 
+     Héritage
+    {% endblock %}
+
+ {% block footer %}
+        <br>
+        <p>Ceci est le footer de heritage</p>
+        {% endblock %}
