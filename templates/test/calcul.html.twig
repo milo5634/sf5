@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+
+{% block h1 %}
+	Calculs
+{% endblock %}
+
+{% block body %}
+	<ul>
+		<li>Nb1 =
+			{{nb1}}
+			Nb2 =
+			{{nb2}}</li>
+		<li>
+			Addition :
+			{{nb1 + nb2}}</li>
+		<li>
+			soustraction :
+			{{nb1 - nb2}}</li>
+		<li>
+			Multiplication :
+			{{nb1 * nb2}}</li>
+		{% if nb2 == 0 %}
+			<li>
+				Division par 0 impossible :
+			</li>
+			{% else %}
+			<li>
+
+				Division :
+				{{nb1 / nb2}}
+			</li>
+            {% endif %}
+		</ul>
+	{% endblock %}

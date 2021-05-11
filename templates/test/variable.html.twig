@@ -5,7 +5,8 @@
 	{# Tableau associatif #}
 	<ul>
 		<li>Jour :
-			{{tableau["jour"]}}  {# Les deux méthode sont viable #}
+			{{tableau["jour"]}}
+			{# Les deux méthode sont viable #}
 		</li>
 		<li>Mois :
 			{{tableau.mois}}
@@ -15,7 +16,7 @@
 		</li>
 	</ul>
 
-	{# tableau avec indices numériques #} 
+	{# tableau avec indices numériques #}
 
 	<ul>
 		<li>Jour :
@@ -30,47 +31,49 @@
 	</ul>
 
 	{#BOUCLE FOR #}
+
 	{% for i in 0..2 %}
 		{{tableau2[i]}}
 	{% endfor %}
 
-<ul>
-	{% for indice, valeur in tableau %}
-		<li>{{indice}}
-			:
-			{{valeur}}</li>
-	{% endfor %}
+	<ul>
+
+		{% for indice, valeur in tableau %}
+			<li>{{indice}}
+				:
+				{{valeur}}</li>
+		{% endfor %}
 	</ul>
 
-    {# IF #}
+	{# IF #}
 
-    {% if nombre < 2 %}
-    Le nombre est inférieur à 2
+	{% if nombre < 2 %}
+		Le nombre est inférieur à 2
 
-    {% elseif nombre < 10 %}
-    Le nombre est compris entre 2 et 9
+	{% elseif nombre < 10 %}
+		Le nombre est compris entre 2 et 9
 
-    {% else %}
-    Le nombre est supérieur ou égal à 10
+	{% else %}
+		Le nombre est supérieur ou égal à 10
 
-    {% endif %}
+	{% endif %}
 
-     {# TESTS #}
-     {% if chaine is defined %}
-     {{chaine}}
-     {% endif %}
+	{# TESTS #}
+	{% if chaine is defined %}
+		{{chaine}}
+	{% endif %}
 
-     {% if chaine is empty %}
-     {{chaine}}
-     {% endif %}
+	{% if chaine is empty %}
+		{{chaine}}
+	{% endif %}
 
 
-{# En Twig, le test 'is empty' ne peut être fait que sur une variable qui existe #}
-     {% if chaine is defined and chaine is empty %}
-     <p>La chaine est vide</p>
-     {% endif %}
+	{# En Twig, le test 'is empty' ne peut être fait que sur une variable qui existe #}
+	{% if chaine is defined and chaine is empty %}
+		<p>La chaine est vide</p>
+	{% endif %}
 
-{# FILTRES #}
-{{tableau.mois|upper}}
+	{# FILTRES #}
+	{{tableau.mois|upper}}
 
 {% endblock %}
