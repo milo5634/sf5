@@ -1,0 +1,101 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+	<a class="navbar-brand" href="{{ path("home")}}">Biblio</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul
+			class="navbar-nav mr-auto">
+			{# Dans les fichiers Twig, on peut accéder à une variable globale 'app'.
+		 app.user : si app.usr est non null, contient un objet user (classe Abonne) qui contient les informations de l'utilisateur connecté #}
+
+
+			  {% if is_granted("IS_AUTHENTICATED_FULLY") %}                     {# {% if app.user %} #}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path("profil_index") }}">
+						<i class="fa fa-user"></i>  {{ app.user.username }}  {#  {{ app.user.pseudo }} #}
+					</a>
+				</li>
+
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path("app_logout") }}">
+						<i class="fa fa-sign-out-alt"></i>
+					</a>
+				</li>
+
+			{% else %}
+				<li class="nav-item active">
+					<a class="nav-link" href="{{ path("app_login") }}">
+						<i class="fa fa-sign-in-alt"></i>
+					</a>
+				</li>
+
+				<li class="nav-item active">
+					<a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
+				</li>
+			{% endif %}
+
+			{# La fonction is_granted()' permet de vérifier si l'utilisation est connecté et à le role admin passé en paramétre #}
+			{% if is_granted("ROLE_ADMIN") %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Livre
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ path("livre") }}">Liste</a>
+						<a class="dropdown-item" href="{{ path("livre_nouveau") }}">Nouveau livre</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+
+
+
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Abonnés
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ path("abonne_index") }}">Liste</a>
+						<a class="dropdown-item" href="{{ path("abonne_new") }}">Nouvel abonné</a>
+					</div>
+				</li>
+
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Catégories
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ path("categorie_index") }}">Liste</a>
+						<a class="dropdown-item" href="{{ path("categorie_new") }}">Nouvelle catégorie</a>
+					</div>
+				</li>
+			{% endif %}
+
+
+			{% if is_granted("ROLE_BIBLIO") %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Emprunt
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ path("emprunt_index") }}">Liste</a>
+						<a class="dropdown-item" href="{{ path("emprunt_new") }}">Nouveau emprunt</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+				{% endif %}
+
+			{# la fonction 'is_granted()' permet de vérifier si l'utilisateur connecté a le rôle passé en paramètre #}
+			
+		</ul>
+		<form class="form-inline my-2 my-lg-0" action="{{path("recherche")}}">
+			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="mot">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</form>
+	</div>
+</nav>

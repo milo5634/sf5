@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche
+{% endblock %}
+
+{% block h1 %}
+	<h1>Résultat pour la recherche de :
+		{{ mot }}</h1>
+{% endblock %}
+
+{% set message = "Aucun résultat pour cette recherche" %}
+
+{% block body %}
+{# 	<div class="card-columns">
+		{% for l in livres %}
+			{{ include("livre/vignette.html.twig", {livre: l})}}
+		{% endfor %}
+	</div> #}
+
+{% endblock %}

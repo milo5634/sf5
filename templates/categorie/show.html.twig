@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorie
+{% endblock %}
+
+{% block body %}
+	<h1>Categorie</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ categorie.id }}</td>
+			</tr>
+			<tr>
+				<th>Titre</th>
+				<td>{{ categorie.titre }}</td>
+			</tr>
+			<tr>
+				<th>Mots</th>
+				<td>{{ categorie.mots }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<th>id</th>
+			<th>Titre</th>
+			<th>Auteur</th>
+		</thead>
+		<tbody>
+			{% for livre in categorie.livres %}
+				<tr>
+					<td>{{ livre.id }}</td>
+					<td>{{ livre.titre }}</td>
+					<td>{{ livre.auteur }}</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan=3>Aucun livre pour cette catégories</td>
+				</tr>
+
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('categorie_index') }}" class="btn btn-secondary">back to list</a>
+
+	<a href="{{ path('categorie_edit', {'id': categorie.id}) }}" class="btn btn-primary">edit</a>
+
+	{{ include('categorie/_delete_form.html.twig') }}
+{% endblock %}

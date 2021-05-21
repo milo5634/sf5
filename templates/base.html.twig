@@ -1,44 +1,67 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-         {% block stylesheets %}
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">        
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		{# Run `composer require symfony/webpack-encore-bundle`
+		           and uncomment the following Encore helpers to start using Symfony UX #}
+		{% block stylesheets %}			
+		{{ encore_entry_link_tags('app') }}
+		{% endblock %}
 
-        {% block javascripts %}
-            <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>        
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-
-
-    <div class="container">
-        <h1>{% block h1 %} Bienvenue à la bibilothèque !{% endblock %}</h1>
-    
-            {% block body %}
-            page d'accueil
-            <p>Nombre = {{nombre is defined ? nombre :"" }} </p>{# utilisation d'un test pour mettre une valeur nombre par défault #}
-            <p>Nombre = {{nombre|default("non défini")}} </p>{# utilisation d'un filtre pour mettre une valeur nombre par défault #}
-    
-            <p>Prénom = {{prenom}} </p>
-            {% endblock %}
-    
-               {% block footer %}
-            <br>
-            <p>Ceci est le footer</p>
-            {% endblock %}
-    </div>
+		{% block javascripts %}			
+			{{ encore_entry_script_tags('app') }}
+			{{ encore_entry_script_tags('admin') }}
+		{% endblock %}
+	</head>
+	<body>
 
 
-    </body>
+		<div class="container">
+
+			{{ include("menu.html.twig") }}
+
+			{# pour accéder aux messages flash, j'utilise la variable app.flashes #}
+			{% for type, messages in app.flashes %}
+				{% for msg in messages %}
+                <div class="alert alert-{{ type }}">
+                {{ msg }}
+                </div>
+                {% endfor %}
+			{% endfor %}
+
+			<h1>
+				{% block h1 %}
+					Bienvenue à la bibilothèque !
+				{% endblock %}
+			</h1>
+
+			{% block body %}
+				page d'accueil
+				<p>Nombre =
+					{{nombre is defined ? nombre :"" }}
+				</p>
+				{# utilisation d'un test pour mettre une valeur nombre par défault #}
+				<p>Nombre =
+					{{nombre|default("non défini")}}
+				</p>
+				{# utilisation d'un filtre pour mettre une valeur nombre par défault #}
+				<p>Prénom =
+					{{prenom}}
+				</p>
+			{% endblock %}
+
+			{% block footer %}
+				<br>
+				<footer><p>Ceci est le footer</p></footer>
+			{% endblock %}
+		</div>
+
+
+	</body>
 </html>
 
 

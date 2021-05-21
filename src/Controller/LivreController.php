@@ -10,11 +10,20 @@ use App\Entity\Livre;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use App\Repository\LivreRepository;
 use App\Form\LivreType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
+#[Route('/admin')]
+
+ // Toutes les routes de ce controleur vont commencer par "/admin"
+  
 class LivreController extends AbstractController
 {
     #[Route('/livre', name: 'livre')]
+    #[IsGranted('ROLE_ADMIN')]
+    /** 
+     * @IsGranted("ROLE_ADMIN") 
+     */
 
     public function index(LivreRepository $livreRepository): Response
     {
@@ -26,9 +35,10 @@ class LivreController extends AbstractController
         
         La méthode 'findAll' récupère tous les enregistrements d'une table et retourne une liste d'objet Entity*/
         $livres = $livreRepository->findAll();
-
+        $livreNonDisponibles = $livreRepository ->livresNonDisponibles();
         return $this->render('livre/index.html.twig', [
             'livres' => $livres,
+            'livres_non_disponibles' => $livreNonDisponibles
         ]);
     }
 
@@ -83,11 +93,50 @@ class LivreController extends AbstractController
         $formLivre = $this->createForm(LivreType::class, $livre);
         /* handleRequest : permet à la variable $formlivre de gérer les informations envoyé par le navigateur */
         $formLivre->handleRequest($request);
-        if ($formLivre->isSubmitted() && $formLivre->isValid()){
+        if ($formLivre->isSubmitted() && $formLivre->isValid()) {
             $em->persist($livre);
             $em->flush();
             return $this->redirectToRoute("livre");
         }
         return $this->render("livre/form.html.twig", ["form" => $formLivre->createView()]);
+    }
+
+    #[Route('/livre/modifier/{id}', name: 'livre_modifier', requirements: ['id' => '\d+'])]
+
+    public function modifier(EntityManager $em, Request $request, LivreRepository $lr, $id)
+
+    {
+        $livre = $lr->find($id); /* la méthode 'find' permet de récupérer un enregistrement avec son identifiant */
+        $formLivre = $this->createForm(LivreType::class, $livre);
+        /* handleRequest : permet à la variable $formlivre de gérer les informations envoyé par le navigateur */
+        $formLivre->handleRequest($request);
+        if ($formLivre->isSubmitted() && $formLivre->isValid()) {
+            /* $em->persist($livre);
+            Pour modifier un enregistrement, pas besoin d'utiliser la méthode 'persist' de l'EntityManager
+            Toutes les variables entités qui ont un id non nulle vont être enregistrées en bdd quand la méthode 'flush' sera appelé
+            */
+
+            $em->flush();
+            return $this->redirectToRoute("livre");
+        }
+        return $this->render("livre/form.html.twig", ["form" => $formLivre->createView()]);
+    }
+
+    #[Route('/livre/supprimer/{id}', name: 'livre_supprimer', requirements: ['id' => '\d+'])]
+
+    /* En passant un objet Livre comme paramétre de la méthode supprimer, $livre sera récupéré dans la base de données selon
+    la valeur {id} passé dans l'URL de la route*/
+    public function supprimer(EntityManager $em, Request $request, Livre $livre)
+    {
+
+        if ($request->isMethod("POST")) {
+            /* La méthode 'remove()' prépare la requéte DELETE */
+            $em->remove($livre);
+            $em->flush();
+            return $this->redirectToRoute("livre");
+        }
+
+
+        return $this->render("livre/supprimer.html.twig", ["livre" => $livre]);
     }
 }

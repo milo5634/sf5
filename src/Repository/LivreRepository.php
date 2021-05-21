@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Livre;
+use App\Entity\Livre, App\Entity\Emprunt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,22 +19,45 @@ class LivreRepository extends ServiceEntityRepository
         parent::__construct($registry, Livre::class);
     }
 
-    // /**
-    //  * @return Livre[] Returns an array of Livre objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Livre[] Returns an array of Livre objects
+     */
+
+    public function findByMot($value)
     {
+        /* 
+SELECT l.*
+FROM livre l
+WHERE l.titre LIKE "%mot%"
+*/
+
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
+            ->where("l.titre LIKE :mot")
+
+            ->setParameter('mot', "%" . $value . "%")
+            ->orderBy('l.auteur', 'ASC')
+            ->AddOrderBy("l.titre")
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
+
+    public function LivresNonDisponibles()
+    {
+
+        /* 
+SELECT l.*
+FROM livre l JOIN emprunt e ON l.id = e.livre_id
+WHERE e.date_retour IS null 
+*/
+        return $this->createQueryBuilder("l")
+            ->join(Emprunt::class, "e", "WITH", "l.id = e.livre")
+            ->where("e.date_retour IS null")
+            ->orderBy("l.auteur")
+            ->AddOrderBy("l.titre")
+            ->getQuery()
+            ->getResult();
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Livre

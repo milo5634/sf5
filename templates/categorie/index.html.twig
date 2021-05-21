@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorie index
+{% endblock %}
+
+	{% block h1 %}
+		<h1>Categorie index</h1>
+	{% endblock %}
+
+{% block body %}
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Titre</th>
+				<th>Mots</th>
+				<th>Nb livres</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for categorie in categories %}
+				<tr>
+					<td>{{ categorie.id }}</td>
+					<td>{{ categorie.titre }}</td>
+					<td>{{ categorie.mots }}</td>
+					<td>{{ categorie.livres|length }}</td>
+					<td>
+						<a href="{{ path('categorie_show', {'id': categorie.id}) }}" ><i class="fa fa-edit"></i></a>
+							<a href="{{ path('categorie_edit', {'id': categorie.id}) }}" ><i class="fa fa-trash"></i></a>
+						</td>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('categorie_new') }}">Create new</a>
+{% endblock %}

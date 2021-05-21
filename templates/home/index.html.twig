@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block h1 %}
+	Bienvenue à la bibilothèque !
+{% endblock %}
+
+{% block body %}
+
+	
+    <div class="card-deck">
+		{% for livre in livres %}{# {% for l in livres %} #}
+			{{ include("livre/vignette.html.twig") }}  {# {{ include("livre/vignette.html.twig", {livre: l}) }} #}
+			{% else %} 
+			{{ message|default("il n'y a aucun livre dans la bibliothéque")}}
+		{% endfor %}
+	</div>
+
+{% endblock %}
